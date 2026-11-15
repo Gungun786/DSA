@@ -1,26 +1,26 @@
 class Solution {
 public:
     int numOfSubarrays(vector<int>& arr) {
+        int n = arr.size();
         const int MOD = 1e9 + 7;
 
-        long long ans = 0;
-        long long odd = 0;
-        long long even = 1; // empty prefix
+        vector<long long> prefix(n);
+        prefix[0]=arr[0];
 
-        long long prefix = 0;
-
-        for(int x : arr) {
-            prefix += x;
-
-            if(prefix % 2 == 0) {
-                ans = (ans + odd) % MOD;
-                even++;
-            } else {
-                ans = (ans + even) % MOD;
-                odd++;
-            }
+        for (int i = 1; i < n; i++) {
+            prefix[i] = prefix[i-1] + arr[i];
         }
 
-        return ans;
+        long long even = 1;
+        long long odd = 0;
+
+        for (int i = 0; i <n; i++) {
+            if (prefix[i] % 2 == 0)
+                even++;
+            else
+                odd++;
+        }
+
+        return (even * odd) % MOD;
     }
 };
