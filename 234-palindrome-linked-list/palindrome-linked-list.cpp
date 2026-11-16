@@ -10,21 +10,36 @@
  */
 class Solution {
 public:
+
     bool isPalindrome(ListNode* head) {
-         vector<int>nums;
-        while(head!=nullptr){
-          nums.push_back(head->val);
-            head=head->next;
+        ListNode* fast=head;
+        ListNode* slow=head;
+        while(fast!=nullptr&&fast->next!=nullptr){
+            slow=slow->next;
+            fast=fast->next->next;
         }
-        int i=0;
-        int j=nums.size()-1;
-        while(i<j){
-            if(nums[i]!=nums[j]){
+        ListNode* prev=slow;
+        slow=slow->next;// head of the second half
+        prev->next=nullptr;
+        //reverse second half 
+        while(slow!=nullptr){
+   ListNode* temp=slow->next;
+      slow->next=prev;
+      prev=slow;
+      slow=temp;
+
+        }
+        //compare  both half using two pointer;
+        ListNode* p1=head;
+        ListNode* p2=prev;
+        while(p2!=nullptr){
+            if(p1->val!=p2->val){
                 return false;
             }
-            i++;
-            j--;
-        } 
+            p1=p1->next;
+            p2=p2->next;
+        }
         return true;
+
     }
 };
